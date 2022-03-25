@@ -1,0 +1,36 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width":300,
+    "height":550,
+    "params": [{"name": "selprovince","select":"point"}],
+    "data": {
+      "url": "https://raw.githubusercontent.com/thatbeer/Vega02/main/BMA_ADMIN_SUB_DISTRICT.json",
+    "format":{"type":"topojson","feature":"BMA_ADMIN_SUB_DISTRICT"}
+    },
+    "transform": [
+      {
+        "lookup": "properties.DISTRICT_N",
+        "from":{
+          "data":{
+            "url": "https://https://raw.githubusercontent.com/Maplub/advmap/master/inf_waste.csv"
+          },
+          "key": "dname",
+          "fields": ["wasteamt"]
+        }
+      }],
+    "projection": {"type":"mercator","scale":2000,"translate":[-3000,850]},
+    "mark":"geoshape",
+    "encoding": {
+      "color":{
+        "condition":{"param":"selprovince",
+        "field":"count",
+        "type": "quantitative"},
+        "value":"grey"
+      },
+      "opacity":{
+        "condition":{"param":"selprovince",
+        "value":1},
+        "value":0.5
+      }
+    }
+}
