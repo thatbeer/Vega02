@@ -1,0 +1,62 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+      "url": "https://raw.githubusercontent.com/thatbeer/Vega02/main/district%20(1).json",
+      "format": {"type": "topojson", "feature": "district"}
+    },
+      "transform": [{
+      "lookup": "properties.dname_e",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/thatbeer/Vega02/main/district%20(1).csv"
+        },
+        "key": "dname_e",
+        "fields": ["no_temple"]
+      }
+    }],
+    "hconcat":[
+    {
+      "width":500,
+      "height":550,
+      "projection": {"type": "mercator"},
+      "mark": "geoshape",
+      "encoding": {
+        "color": {
+              "field": "no_temple",
+              "type":"quantitative"
+        },
+        "opacity": {
+        "condition": {
+          "param": "pts",
+          "value": 1
+        },
+        "value": 0.3
+      }
+      }
+    },
+    {
+      "width":800,
+      "height":550,
+      "mark": "bar",
+      "params": [{
+          "name": "pts",
+          "select": {"type": "point", "encodings": ["x"],        "on":"mouseover"}
+      }],
+      "encoding": {
+        "x":{"field":"properties.dname_e","type":"nominal"},
+        "y":{"field":"no_temple","type": "quantitative"},
+        "color": {
+              "field":"no_temple",
+              "type": "quantitative"
+        },
+        "opacity":{
+          "condition":{
+            "param":"pts",
+            "value":1
+          },
+          "value":0.5
+        }      
+      }
+    }
+    ]
+  }
